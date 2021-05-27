@@ -1,5 +1,5 @@
 <?php
-require_once 'C:/xampp/htdocs/dms/Business Services Layer/medicineData/medicineData.php';
+require_once '../../Business Services Layer/medicineData/medicineData.php';
 
 
 class medicineController

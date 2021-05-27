@@ -1,24 +1,37 @@
-<?php 
-session_start();
-if(isset($_POST['username']) && !empty($_POST['username']) AND isset($_POST['psw']) && !empty($_POST['psw'])) {
-    $username = mysql_escape_string($_POST['username']); // Set variable for the username
- 
-    $result = mysql_fetch_assoc(mysql_query("SELECT psw FROM customer WHERE active = '1' AND username = '" . $username . "'"));
-    $password_hash = (isset($result['psw']) ? $result['psw'] : '');
-    $result = password_verify($_POST['psw'], $password_hash);
-    if($result){
-    $msg = 'Login Complete! Thanks';
-    // Set cookie / Start Session / Start Download etc...
-}else{
-    $msg = 'Login Failed! Please make sure that you enter the correct details and that you have activated your account.';
-}
-}
+<?php
+
+$email = $_GET['email'];
+$token = $_GET['token'];
+$userType = $_GET['userType'];
+
+
+
+if(isset($_POST['submit'])){
+	if($userType=='customer'){
+    require_once '..\..\Business Services Layer\userController\RegisCustomer.php';
+    $controller = new RegisCustomer();
+        $customerData = $controller->setPassword($email, $token);
+        
+
+    }else if($userType=='serviceProvider'){
+    require_once '..\..\Business Services Layer\userController\RegisServiceProvider.php';
+    $controller = new RegisServiceProvider();
+        $serviceProviderData = $controller->setPassword($email, $token);
+        
+
+    }else {
+    require_once '..\..\Business Services Layer\userController\RegisRunner.php';
+    $controller = new RegisRunner();
+        $runnerData = $controller->setPassword($email, $token);
+        
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>
  <center>
 
-<title>User Login</title>
+<title>Set New Password</title>
 <style>
   @import "compass/css3";
 
@@ -177,49 +190,35 @@ label:hover ~ input[type=password] {
     
 <div class="form-group">
   <div class="form-group">
-  <form action="../../Business Services Layer/loginController/loginController.php"  method="GET" >
+  <form method="POST" >
   <br></br>
   <div class="card text-white bg-dark mb-3" style="margin-top: 50px">
-  <div class="card-header">LOG IN</div>
+  <div class="card-header">SET NEW PASSWORD</div>
   <div class="card-body">
     <h4 class="card-title"></h4>
     <p class="card-text"></p>
   
 
      <div class="form-group"><p>
-      <label for="username">USER NAME</label>
-      <input type="text" class="form-control" placeholder="Enter Username"
-      name="username" value="<?php if(isset($_COOKIE["username"])) { echo $_COOKIE["username"]; } ?>" required>
+      <label for="username">NEW PASSWORD</label>
+      <input type="text" class="form-control" placeholder="Enter New password"
+      name="password" required>
     </p></div>
     <div class="form-group">
     <p> 
-    <label for= "psw">PASSWORD</label>
-    <input type="password" class="form-control" placeholder="Enter Password" name="psw" id="psw" value="<?php if(isset($_COOKIE["psw"])) { echo $_COOKIE["psw"]; } ?>" required/>
+    <label for= "psw">CONFIRM PASSWORD</label>
+    <input type="password" class="form-control" placeholder="Confirm Password" name="password" id="password" required/>
 
     </p>
-   <div class="form-group has-feedback">
-    <br>
-              <p>
-                User Type: 
-                <select name="userType">
-                   <option value="admin">Admin</option>
-                   <option value="customer">Customer</option>
-                   <option value="serviceProvider">Service Provider</option>
-                   <option value="runner">Runner</option>
-                </select>
-              </p>
-          </br>
-          </div>
+   
   <center>
     </p>
-    <label><input type="checkbox" checked="checked" name="remember"> Remember me</label>
-    <label><a href="forgetPassword.php">Forget Password</a><label><br>
-    <button type="submit" name="login" class="btn btn-primary" style="width:130px">Log In
+    <button type="submit" name="submit" class="btn btn-primary" style="width:130px">Submit
     </button>
 </form>
 
 </form>
-<input type="button" name="register" class="btn btn-primary" value="register" style="width:130px" onclick="window.location.href='../Home/registerCustomer.php'"></a></button>
+
 
 
 </div>

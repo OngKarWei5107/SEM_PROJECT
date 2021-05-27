@@ -14,11 +14,14 @@ print 'alert("Connection Failed!!")';
 print '</script>';  
 }
 
-session_start();
+
 		if(isset($_GET['login'])){
 		$username = $_REQUEST['username'];
     	$password = $_REQUEST['psw'];
     	$userType = $_REQUEST['userType'];
 		include "../loginData/loginData.php";
 		}
+
+
+
 ?>

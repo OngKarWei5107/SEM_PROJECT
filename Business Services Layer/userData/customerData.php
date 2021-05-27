@@ -27,17 +27,17 @@ class DB
         															   // the error when we perform DB operations
         return $pdo;
 	}
-	public static function run($sql, $args = NULL)
+	public static function run($query, $param = NULL)
     {
-        if (!$args) // if no parameter
+        if (!$param) // if no parameter
         {
         	// run the query straight away without parameter binding
-             return DB::connect()->query($sql);
+             return DB::connect()->query($query);
         }
         // prepare the sql query
-        $stmt = DB::connect()->prepare($sql);
+        $stmt = DB::connect()->prepare($query);
         // execute the query with bind parameter values
-        $stmt->execute($args);
+        $stmt->execute($param);
         return $stmt;
     }
 }
@@ -57,9 +57,14 @@ class customerData
 	*/
 	public $customerid;
 	public $username;
+	public $email;
 	public $psw;
 	public $phone;
 	public $address;
+	public $hash;
+	public $active;
+	public $password;
+	public $token;
 
 	/**
 	* Static method All()
@@ -89,9 +94,9 @@ class customerData
 	* based on the feedback id passed to the method
 	* @param string customerid
 	*/
-	public static function getById($customerid)
+	public static function getById()
 	{
-		$query = "SELECT * FROM customer WHERE customerid = :customerid LIMIT 1";
+		$query = "SELECT * FROM customer WHERE customerid = :customerid";
 		$param = [':customerid' => $customerid]; // the parameter that will be bind by pdo
 		try {
 			// use static method run() from class DB 
@@ -108,12 +113,15 @@ class customerData
 	}
 	public function signup()
 	{
-		$query = "INSERT INTO customer (`username`, `psw`, `phone`, `address`) VALUES (:username, :psw, :phone, :address)";
+		$query = "INSERT INTO customer (`username`, `email`, `psw`, `phone`, `address`, `hash`, `active`) VALUES (:username, :email, :psw, :phone, :address, :hash, :active)";
 		$param = [ // the parameter that will be bind by pdo
 			':username' => $this->username,
+			':email' => $this->email,
 			':psw' => $this->psw,
 			':phone' => $this->phone,
 			':address' => $this->address,
+			':hash' => $this->hash,
+			'active' => $this->active
 			];	
 		
 		try { 
@@ -128,5 +136,27 @@ class customerData
 		}
 	}
 	
+	public function check(){
+		$query = "SELECT * from customer WHERE email=:email";
+		$param = [':email' => $this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowcount();
+		return $count;
+	}
+
+	public function addToken(){
+		$query = "UPDATE customer SET token=:token WHERE email=:email";
+		$param = [':token'=>$this->token, ':email'=>$this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowCount();
+		return $count;
+	}
 	
+	public function setPassword(){
+		$query = "UPDATE customer SET psw=:password WHERE token=:token and email=:email";
+		$param = [':password'=>$this->password, ':token'=>$this->token, ':email'=>$this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowCount();
+		return $count;
+	}
 }

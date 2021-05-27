@@ -59,7 +59,9 @@ class runnerData
 	public $username;
 	public $psw;
 	public $phone;
-	public $address;
+	public $email;
+	public $token;
+	public $password;
 
 	/**
 	* Static method All()
@@ -108,12 +110,12 @@ class runnerData
 	}
 	public function signup()
 	{
-		$query = "INSERT INTO runner (`username`, `psw`, `phone`, `address`) VALUES (:username, :psw, :phone, :address)";
+		$query = "INSERT INTO runner (`username`, `psw`, `email`, `phone`) VALUES (:username, :psw, :email, :phone)";
 		$param = [ // the parameter that will be bind by pdo
 			':username' => $this->username,
+			':email' => $this->email,
 			':psw' => $this->psw,
 			':phone' => $this->phone,
-			':address' => $this->address,
 			];	
 		
 		try { 
@@ -126,6 +128,30 @@ class runnerData
 		} catch (PDOException $e) {
 			return $e->getMessage();
 		}
+	}
+
+	public function check(){
+		$query = "SELECT * from runner WHERE email=:email";
+		$param = [':email' => $this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowcount();
+		return $count;
+	}
+
+	public function addToken(){
+		$query = "UPDATE runner SET token=:token WHERE email=:email";
+		$param = [':token'=>$this->token, ':email'=>$this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowCount();
+		return $count;
+	}
+	
+	public function setPassword(){
+		$query = "UPDATE runner SET psw=:password WHERE token=:token and email=:email";
+		$param = [':password'=>$this->password, ':token'=>$this->token, ':email'=>$this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowCount();
+		return $count;
 	}
 	
 	

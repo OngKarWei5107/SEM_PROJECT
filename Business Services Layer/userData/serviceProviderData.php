@@ -57,9 +57,12 @@ class serviceProviderData
 	*/
 	public $serviceProviderid;
 	public $username;
+	public $email;
 	public $psw;
 	public $phone;
-	public $address;
+	public $token;
+	public $password;
+	
 
 	/**
 	* Static method All()
@@ -108,12 +111,12 @@ class serviceProviderData
 	}
 	public function signup()
 	{
-		$query = "INSERT INTO serviceProvider (`username`, `psw`, `phone`, `address`, `approved`) VALUES (:username, :psw, :phone, :address, 0)";
+		$query = "INSERT INTO serviceProvider (`username`, `email`, `psw`, `phone`, `approved`) VALUES (:username, :email, :psw, :phone, 0)";
 		$param = [ // the parameter that will be bind by pdo
 			':username' => $this->username,
+			':email' => $this->email,
 			':psw' => $this->psw,
 			':phone' => $this->phone,
-			':address' => $this->address,
 			];	
 		
 		try { 
@@ -129,4 +132,27 @@ class serviceProviderData
 	}
 	
 	
+	public function check(){
+		$query = "SELECT * from serviceProvider WHERE email=:email";
+		$param = [':email' => $this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowcount();
+		return $count;
+	}
+
+	public function addToken(){
+		$query = "UPDATE serviceProvider SET token=:token WHERE email=:email";
+		$param = [':token'=>$this->token, ':email'=>$this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowCount();
+		return $count;
+	}
+	
+	public function setPassword(){
+		$query = "UPDATE serviceProvider SET psw=:password WHERE token=:token and email=:email";
+		$param = [':password'=>$this->password, ':token'=>$this->token, ':email'=>$this->email];
+		$stmt = DB::Run($query, $param);
+		$count = $stmt->rowCount();
+		return $count;
+	}
 }

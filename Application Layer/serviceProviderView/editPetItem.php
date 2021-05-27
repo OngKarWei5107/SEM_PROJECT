@@ -1,6 +1,6 @@
 <?php
 
-require_once 'C:/xampp/htdocs/dms/Business Services Layer/petItemController/petItemController.php';  
+require_once '../../Business Services Layer/petItemController/petItemController.php';  
 
 $pet = new petItemController();
 

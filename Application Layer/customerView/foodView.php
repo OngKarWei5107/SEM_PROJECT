@@ -1,5 +1,5 @@
 <?php
-require_once 'C:/xampp/htdocs/dms/Business Services Layer/foodController/foodController.php';
+require_once '../../Business Services Layer/foodController/foodController.php';
 
 
 $controller = new foodController();

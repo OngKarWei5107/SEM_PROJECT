@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2021 at 03:27 AM
+-- Generation Time: May 17, 2021 at 03:04 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -50,20 +50,27 @@ INSERT INTO `admin` (`adminid`, `username`, `psw`) VALUES
 CREATE TABLE `customer` (
   `customerid` int(11) NOT NULL,
   `username` varchar(250) NOT NULL,
+  `email` text NOT NULL,
   `psw` varchar(20) NOT NULL,
   `phone` int(12) NOT NULL,
   `address` varchar(250) NOT NULL,
-  `order_id` int(11) NOT NULL
+  `order_id` int(11) NOT NULL,
+  `hash` varchar(32) NOT NULL,
+  `active` int(1) NOT NULL DEFAULT 0,
+  `password` varchar(250) NOT NULL,
+  `token` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`customerid`, `username`, `psw`, `phone`, `address`, `order_id`) VALUES
-(1, 'RANI', '29102381411', 189927736, 'no1181, Taman Mutiara', 1),
-(2, 'RESSI', '1231230490', 274847663, 'Taman Kempas', 2),
-(3, 'WAKKA', '239182039709', 1628376678, 'Laguna Merbok', 3);
+INSERT INTO `customer` (`customerid`, `username`, `email`, `psw`, `phone`, `address`, `order_id`, `hash`, `active`, `password`, `token`) VALUES
+(1, 'RANI', '', '29102381411', 189927736, 'no1181, Taman Mutiara', 1, '', 0, '', 'g5vx0zqf8l'),
+(2, 'RESSI', '', '1231230490', 274847663, 'Taman Kempas', 2, '', 0, '', 'g5vx0zqf8l'),
+(3, 'WAKKA', '', '239182039709', 1628376678, 'Laguna Merbok', 3, '', 0, '', 'g5vx0zqf8l'),
+(10, 'ADAM', '123@gmail.com', '123123', 135158829, 'testing', 0, '', 0, '', ''),
+(18, 'KARMA', 'ongkarwei05107@gmail.com', '789456123', 174541334, 'Lorong 3/10, Taman Kempas', 0, 'f2217062e9a397a1dca429e7d70bc6ca', 1, '', '3w4kozugqp');
 
 -- --------------------------------------------------------
 
@@ -178,19 +185,16 @@ CREATE TABLE `runner` (
   `runnerid` int(11) NOT NULL,
   `username` varchar(250) NOT NULL,
   `psw` varchar(20) NOT NULL,
-  `phone` int(12) NOT NULL,
-  `address` varchar(250) NOT NULL
+  `phone` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `runner`
 --
 
-INSERT INTO `runner` (`runnerid`, `username`, `psw`, `phone`, `address`) VALUES
-(1, 'SAM21', '670421027789', 189927736, 'no1181, Taman Mutiara'),
-(2, 'wer93', '239012839101', 274847663, 'Taman Kempas'),
-(3, 'qweqwe09', '2102831029', 1628376678, 'Laguna Merbok'),
-(4, 'FIKRI', '123123123', 198987736, 'Lorong 3/10, Taman Kempas');
+INSERT INTO `runner` (`runnerid`, `username`, `psw`, `phone`) VALUES
+(1, 'SAM21', '670421027789', 189927736),
+(2, 'wer93', '239012839101', 274847663);
 
 -- --------------------------------------------------------
 
@@ -203,20 +207,19 @@ CREATE TABLE `serviceprovider` (
   `username` varchar(250) NOT NULL,
   `psw` varchar(20) NOT NULL,
   `approved` int(10) NOT NULL,
-  `phone` int(12) NOT NULL,
-  `address` varchar(250) NOT NULL
+  `phone` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `serviceprovider`
 --
 
-INSERT INTO `serviceprovider` (`serviceProviderid`, `username`, `psw`, `approved`, `phone`, `address`) VALUES
-(1, 'BAMI', '780222027104', 1, 189927736, 'no1181, Taman Mutiara'),
-(2, 'SAYEK', '12097102989', 0, 274847663, 'Taman Kempas'),
-(3, 'WEH SING', '31204918290', 0, 1628376678, 'Laguna Merbok'),
-(5, 'ONG123', '123123123', 0, 174541334, 'Lorong 3/9, Taman Kempas'),
-(12, 'ONG', '123123123', 1, 174541334, 'Lorong 3/10, Taman Kempas');
+INSERT INTO `serviceprovider` (`serviceProviderid`, `username`, `psw`, `approved`, `phone`) VALUES
+(1, 'BAMI', '780222027104', 1, 189927736),
+(2, 'SAYEK', '12097102989', 0, 274847663),
+(3, 'WEH SING', '31204918290', 0, 1628376678),
+(5, 'ONG123', '123123123', 0, 174541334),
+(12, 'ONG', '123123123', 1, 174541334);
 
 --
 -- Indexes for dumped tables
@@ -232,7 +235,8 @@ ALTER TABLE `admin`
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customerid`);
+  ADD PRIMARY KEY (`customerid`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `food`
@@ -291,7 +295,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `customerid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `food`

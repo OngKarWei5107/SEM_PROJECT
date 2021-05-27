@@ -1,5 +1,5 @@
 <?php
-require_once 'C:/xampp/htdocs/dms/Business Services Layer/petItemData/petItemData.php';
+require_once '../../Business Services Layer/petItemData/petItemData.php';
 
 
 class petItemController

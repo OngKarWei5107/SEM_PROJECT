@@ -1,6 +1,6 @@
 <?php
 
-require_once 'C:/xampp/htdocs/dms/Business Services Layer/medicineController/medicineController.php';  
+require_once '../../Business Services Layer/medicineController/medicineController.php';  
 if (isset($_POST['btnRegister'])) {
 
 $medical = new medicineController();

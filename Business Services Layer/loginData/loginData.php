@@ -9,15 +9,27 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
     
-    print '<script type="text/javascript">'; 
+print '<script type="text/javascript">'; 
 print 'alert("Connection Failed!!")'; 
 print '</script>';  
 }
 
 
+
       $username = $_REQUEST['username'];
       $password = $_REQUEST['psw'];
       $userType = $_REQUEST['userType'];   
+
+if(!empty($_REQUEST["remember"])) {
+            setcookie ("username",$_REQUEST["username"],time()+ 3600 ,"/SEM_PROJECT/Application%20Layer/Home");
+            setcookie ("psw",$_REQUEST["psw"],time()+ 3600,"/SEM_PROJECT/Application%20Layer/Home");
+            echo "Cookies Set Successfuly";
+          } else {
+            setcookie("username","" ,time()+ 3600 ,"/SEM_PROJECT/Application%20Layer/Home" );
+            setcookie("psw","" ,time()+ 3600 ,"/SEM_PROJECT/Application%20Layer/Home");
+            echo "Cookies Not Set";
+          }
+
 if(isset($_REQUEST['userType'])){
   
     if($userType=="admin")
@@ -37,6 +49,7 @@ if(isset($_REQUEST['userType'])){
       if($flag==1)
       {
           $_SESSION['username']=$username;
+         
           header("location:../../Application Layer/adminView/approvalAcc.php");
       }
       // if enetered email, password doesnt match db values
@@ -54,7 +67,7 @@ if(isset($_REQUEST['userType'])){
       while($row=mysqli_fetch_array($result))
       {
           //if enetered email, password matches database values
-          if($username==$row[1] && $password==$row[2]) {
+          if($username==$row[1] && $password==$row[3]) {
               $flag=1;
               break;
           }
@@ -62,9 +75,10 @@ if(isset($_REQUEST['userType'])){
       if($flag==1)
       {
           $_SESSION['username']=$username;
+           
           header("location:../../Application Layer/customerView/customerInterface.php");
       }
-      // if enetered email, password doesnt match db values
+      // if entered email, password doesnt match db values
       else
       {
           header("location:../../Application Layer/Home/User_Login.php");
@@ -86,7 +100,7 @@ if(isset($_REQUEST['userType'])){
               }else{
       while($row=mysqli_fetch_array($result))
       {
-        if($username==$row[1] && $password==$row[2]) {
+        if($username==$row[1] && $password==$row[3]) {
           $flag=1;
           break;
               
@@ -114,7 +128,7 @@ if(isset($_REQUEST['userType'])){
       while($row=mysqli_fetch_array($result))
       {
           //if enetered email, password matches database values
-          if($username==$row[1] && $password==$row[2]) {
+          if($username==$row[1] && $password==$row[3]) {
               $flag=1;
               break;
           }

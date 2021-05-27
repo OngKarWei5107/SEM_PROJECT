@@ -1,5 +1,5 @@
 <?php
-require_once 'C:/xampp/htdocs/dms/Business Services Layer/orderData/orderData.php';
+require_once '../../Business Services Layer/orderData/orderData.php';
 session_start();
 
 if(isset($_GET['success'])){
