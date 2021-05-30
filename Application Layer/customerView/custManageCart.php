@@ -50,9 +50,8 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="customerInterface.php">Home</a></li>
-        <li><a href=" ../customerView/custManageCart.php">Cart</a></li>
-        <li><a href="petItemAdd.php">Add cart</a></li>
+        <li><a href="customerInterface.php">Home</a></li>
+        <li class="active"><a href=" ../customerView/custManageCart.php">Cart</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -168,7 +167,7 @@ if(!empty($_GET["action"])) {
             these session variables are used in cart shown on user navigation bar
             */
             $_SESSION['total'] = $item_total;
-            $_SESSION['count'] =$count-1;
+            $_SESSION['count'] = $count-1;
             header("location: custManageCart.php");
             break;
     }
@@ -194,9 +193,10 @@ if(isset($_SESSION["cart_item"])){
                     <tr>
                         <th><strong>#</strong></th>
                         <th><strong>Product Name</strong></th>
+                        <th><strong>Photo</strong></th>
                         <th><strong>Price</strong></th>
                         <th><strong>Quantity</strong></th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                     <?php
                     $query3="SELECT order_id from customer";
@@ -207,14 +207,28 @@ if(isset($_SESSION["cart_item"])){
                     foreach ($_SESSION["cart_item"] as $item){
                     ?>
                         <tr>
+                            <form method="POST">
                             <td><?php echo $count ?>.</td>
                             <td><?php echo $item["petItemName"] ?></td>
+                            <td><img src="../serviceProviderView/photo/<?=$item["photo"]?>" height="150px" weight="150px"></td>
                             <td><?php echo "RM".$item["price"]?></td>
-                            <td><?php echo $item["quantity"] ?></td>
-                            <td><a href="custManageCart.php?action=remove&petItemName=<?php echo $item["petItemName"]; ?>">Remove</a></td>
+                            <td><input type="number" name="quantity" value="<?php echo $item["quantity"]?>" min="1"></td>
+                            <td><button type="submit" class="btn btn-primary" name="update">Update</button><a href="custManageCart.php?action=remove&petItemName=<?php echo $item["petItemName"]; ?>">Remove</a></td>
+                            </form>
 <?php 
     $query1 = "insert into order_info values('".$count."','" . $item["petItemName"] . "','" . $item["price"] . "','" . $item["quantity"] . "','".$order_id."','0')";
     mysqli_query($conn, $query1);
+
+    if(isset($_POST['update'])){
+      $query2 = "update order_info set quantity = '".$item["quantity"]."'";
+      mysqli_query($conn, $query2);
+
+      if($conn->query($query2)===TRUE){
+        echo "Update success";
+      }
+      else
+        echo "Failure";
+    }
 ?>
                             
                         </tr>
@@ -223,14 +237,13 @@ if(isset($_SESSION["cart_item"])){
                         $item_total += ($item["price"]*$item["quantity"]);
                     }
                     ?>
-                    
+          
                    
                     <tr>
-                        <td colspan="5" align=right><strong>Total:</strong> <?php echo "RM".$item_total; ?></td>
+                        <td colspan="6" align=right><strong>Total:</strong> <?php echo "RM".$item_total; ?></td>
                     </tr>
                     <tr>
-                        <td><a href="customerInterface.php" class="btn btn-primary pull-right">Add Another Order</a> </td>
-                        <td colspan="5" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
+                        <td colspan="6" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
                     </tr>
                 </tbody>
             </table>
@@ -260,9 +273,10 @@ else if(isset($_SESSION["cart_item1"])){
                     <tr>
                         <th><strong>#</strong></th>
                         <th><strong>Product Name</strong></th>
+                        <th><strong>Photo</strong></th>
                         <th><strong>Price</strong></th>
                         <th><strong>Quantity</strong></th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                     <?php
                     $query3="SELECT order_id from customer";
@@ -275,8 +289,9 @@ else if(isset($_SESSION["cart_item1"])){
                         <tr>
                             <td><?php echo $count ?>.</td>
                             <td><?php echo $item["medicineName"] ?></td>
+                            <td><img src="../serviceProviderView/photo/<?=$item["photo"]?>" height="150px" weight="150px"></td>
                             <td><?php echo "RM".$item["price"]?></td>
-                            <td><?php echo $item["quantity"] ?></td>
+                            <td><input type="number" name="quantity" value="<?php echo $item["quantity"] ?>" min="1"></td>
                             <td><a href="custManageCart.php?action=remove&medicineName=<?php echo $item["medicineName"]; ?>">Remove</a></td>
 <?php 
     $query1 = "insert into order_info values('".$count."','" . $item["medicineName"] . "','" . $item["price"] . "','" . $item["quantity"] . "','".$order_id."','0')";
@@ -292,11 +307,10 @@ else if(isset($_SESSION["cart_item1"])){
                     
                    
                     <tr>
-                        <td colspan="5" align=right><strong>Total:</strong> <?php echo "RM".$item_total; ?></td>
+                        <td colspan="6" align=right><strong>Total:</strong> <?php echo "RM".$item_total; ?></td>
                     </tr>
                     <tr>
-                        <td><a href="customerInterface.php" class="btn btn-primary pull-right">Add Another Order</a> </td>
-                        <td colspan="5" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
+                        <td colspan="6" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
                     </tr>
                 </tbody>
             </table>
@@ -326,9 +340,10 @@ else if(isset($_SESSION["cart_item2"])){
                     <tr>
                         <th><strong>#</strong></th>
                         <th><strong>Product Name</strong></th>
+                        <th><strong>Photo</strong></th>
                         <th><strong>Price</strong></th>
                         <th><strong>Quantity</strong></th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                     <?php
                     $query3="SELECT order_id from customer";
@@ -341,8 +356,9 @@ else if(isset($_SESSION["cart_item2"])){
                         <tr>
                             <td><?php echo $count ?>.</td>
                             <td><?php echo $item["foodName"] ?></td>
+                            <td><img src="../serviceProviderView/photo/<?php echo $item["photo"]?>" height="150px" weight="150px"></td>
                             <td><?php echo "RM".$item["price"]?></td>
-                            <td><?php echo $item["quantity"] ?></td>
+                            <td><input type="number" name="quantity" value="<?php echo $item["quantity"] ?>" min="1"></td>
                             <td><a href="custManageCart.php?action=remove&foodName=<?php echo $item["foodName"]; ?>">Remove</a></td>
 <?php 
     $query1 = "insert into order_info values('".$count."','" . $item["foodName"] . "','" . $item["price"] . "','" . $item["quantity"] . "','".$order_id."','0')";
@@ -358,11 +374,10 @@ else if(isset($_SESSION["cart_item2"])){
                     
                    
                     <tr>
-                        <td colspan="5" align=right><strong>Total:</strong> <?php echo "RM".$item_total; ?></td>
+                        <td colspan="6" align=right><strong>Total:</strong> <?php echo "RM".$item_total; ?></td>
                     </tr>
                     <tr>
-                        <td><a href="customerInterface.php" class="btn btn-primary pull-right">Add Another Order</a> </td>
-                        <td colspan="5" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
+                        <td colspan="6" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
                     </tr>
                 </tbody>
             </table>
@@ -380,7 +395,6 @@ else{
             <center><h2>Cart is empty</h2></center>
         </div>
     <tr>
-        <td><a href="customerInterface.php" class="btn btn-primary pull-right">Add Another Order</a> </td>
         <td colspan="5" align="right"><a href="../payment/payment.php" class="btn btn-primary">Confirm order</a> </td>
     </tr>
     </div>
