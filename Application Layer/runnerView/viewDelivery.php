@@ -57,8 +57,8 @@ require_once '../../Business Services Layer/deliveryController/deliveryControlle
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href=" ../runnerView/manageDelivery.php">Home</a></li>
-        <li><a href=" ../runnerView/viewDelivery.php">View</a></li>
+        <li><a href=" ../runnerView/manageDelivery.php">Home</a></li>
+        <li class="active"><a href=" ../runnerView/ViewDelivery.php">View</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -73,50 +73,49 @@ require_once '../../Business Services Layer/deliveryController/deliveryControlle
     
   </div>
 </div>
-
-
-
 </body>
 </html>
+
+
 <form action="" method="get">
+<?php
+if ($row=mysqli_fetch_array($result)){
+?>
 <center>
-  <center><h2>Order Available</h2></center>
+  <center><h2>Order Done</h2></center>
   <table border="1">
 <thead>
 <tr>
-<th>ID </th>
+<th>Order ID </th>
 <th>Product</th>
 <th>Quantity</th>
 <th>Price</th>
-<th>Order ID</th>
-<th>Address</th>
-<th>Update</th>
 </tr>
 </thread>
-<?php 
-while($row = mysqli_fetch_array($result))
-  {
-?>
+
   <tr>
-  <td><?php echo $row['id']?></td>
+  <td><?php echo $row['order_id']?></td>
   <td><?php echo $row['product_name']?></td>
   <td><?php echo $row['quantity']?></td>
   <td><?php echo $row['price']?></td>
-  <td><?php echo $row['order_id']?></td>
-  <td><?php echo $row['address']?></td>
-  <td><input type="button" name="check[$i]" onclick="<?php echo $row['id']?>" value="ACCEPT">
-  <input type="button" onclick="" name="" value="VIEW"></td> 
   </tr>
   <?php
-  $i++;
-  }
-  ?>
+}else{
+?>
+    <div class="form-group col-md-3"></div>
+    <div class="form-group col-md-6">
+        <div class="alert alert-info">
+            <center><h2>No order completed</h2></center>
+        </div>
+    </div>
+   <?php
+ }
+?>  
 </table>
 </form>
-<br><br>
-</center>
-<br><br>
-
+   
+</table>
+</form>
 <br><br>
 </center>
 <br><br><br><br>
