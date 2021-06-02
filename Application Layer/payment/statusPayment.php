@@ -95,7 +95,7 @@ print '</script>';
     <div class="row">
       <div class="col-lg-12 text-center">
         <h1 class="mt-5">Thank You!</h1>
-        <p class="lead">Back to Home page<a href="../customerView/customerinterface.php"></p>
+        <p class="lead">Your item will be deliver by our runner shortly.</p>
         <ul class="list-unstyled">
           <li></li>
           <li></li>

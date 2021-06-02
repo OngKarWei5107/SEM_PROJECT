@@ -53,7 +53,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="../customerView/customerInterface.php">Home</a></li>
         <li><a href=" ../customerView/custManageCart.php">Cart</a></li>
-        <li><a href="payment.php">payment</a></li>
+        <li><a href="payment.php">Payment</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
