@@ -1,4 +1,5 @@
 <?php
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -72,11 +73,11 @@ print '</script>';
       <ul class="nav navbar-nav">
         <li class="active"><a href="../customerView/customerInterface.php">Home</a></li>
         <li><a href=" ../customerView/custManageCart.php">Cart</a></li>
-        <li><a href="#">View</a></li>
+        <li><a href="payment.php">Payment</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="../../Business Services Layer/loginController/logoutController.php"><span class="glyphicon glyphicon-log-in"></span> Signup</a></li>
+        <li><a href="../../Business Services Layer/controller/loginController/logoutController.php"><span class="glyphicon glyphicon-log-in"></span> Signup</a></li>
       </ul>
     </div>
   </div>
@@ -88,37 +89,37 @@ print '</script>';
   </div>
 </div>
 
+<form action="statusPayment.php" method="get">
+<div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Name : <input type="text" name="name"></h1>
+        <h1 class="mt-5">Address: <input type="text" name="name"></h1>
+    <tr>
+                        <form action="../../Application Layer/payment/success.php" method="post">
+                        <input type="hidden" name="amount" value="<?php echo $item_total; ?>"/>
+                        <input type="submit" name="submit" value="Submit">
+                        </form>
+    </tr>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+ </form>
 
 
-</body>
-</html>
+ 
+  <br><br>
+     
 
 
-
-
-<div class="container-xl">
-    <div class="table-responsive">
-        <div class="table-wrapper">
-
-    
-
-          <center> <div class="col-sm-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading"><b>Payment</b></div><br>
-              <table class="border" style="width:100%">
-                <thead>
-                  <tr>
-                    <th><center><a href="cod.php"> <img src="../serviceproviderView/photo/money.png" alt="" width="60" height="60"><br> Cash On Delivery</center></th></a>
-                    <th><center><a href="paymentCard.php"> <img src="../serviceproviderView/photo/visa.jpg" alt="" width="60" height="60"><br>Debit/Credit Card</center></th></a>
-                  </tr>
-                </thead>
-              </table>
+              </h4>
+            
             </div>
-          </div><br>
-  </div>
-</div></div></div>
-</div>
+          </div>
+        </div>
 
+        <br><br>
 
 <style>
   footer .main-footer {
